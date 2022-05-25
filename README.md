@@ -1,6 +1,6 @@
 # note_project
 
-A new Flutter project.
+Todo App Flutter project .
 
 ## Getting Started
 
