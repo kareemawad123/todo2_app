@@ -1,0 +1,125 @@
+import 'package:flutter/material.dart';
+import 'package:note_project/View/EditNote.dart';
+import 'package:provider/provider.dart';
+
+import '../Controller/DatabaseHandler.dart';
+import '../Controller/ProviderController.dart';
+import '../Model/UserModel.dart';
+
+class NoteWidget extends StatefulWidget {
+  NoteWidget(
+      {Key? key,
+      required this.noteTitle,
+      required this.noteData,
+      required this.checkBox,
+      required this.id,})
+      : super(key: key);
+  final String? noteTitle;
+  final String? noteData;
+  late bool? checkBox;
+  final int? id;
+
+  @override
+  State<NoteWidget> createState() => _NoteWidgetState();
+}
+
+class _NoteWidgetState extends State<NoteWidget> {
+  DatabaseHandler? databaseHandler = DatabaseHandler.instance;
+  UserModel? note;
+
+  Future<UserModel> getOneUser() async {
+    note = await databaseHandler!.getOneUsers(widget.id!);
+    print('One User Done');
+    print('Title: ${note!.noteTitle}');
+    return note!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        getOneUser();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => NoteEdit(note: note!)));
+      },
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(
+          bottom: 10,
+        ),
+        decoration:  BoxDecoration(
+          //color: Color(0xff004D80),
+          gradient: LinearGradient(
+              colors: [const Color(0xff004D7F), Colors.blue.shade900],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter),
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15),
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
+          ),
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: <Widget>[
+                Theme(
+                  data: ThemeData(unselectedWidgetColor: Colors.white),
+                  child: Checkbox(
+                    activeColor: Colors.blue,
+                    focusColor: Colors.white,
+                    checkColor: Colors.white,
+                    value: widget.checkBox,
+                    onChanged: (value) {
+                      setState(() {
+                        widget.checkBox = value!;
+                        print('CheckBoxxx: ${widget.checkBox}');
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    widget.noteTitle!,
+                    style: widget.checkBox! ?   const TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    decorationColor: Colors.white,
+                    decorationStyle: TextDecorationStyle.solid,
+                    decorationThickness: 2,
+                    decoration: TextDecoration.lineThrough,
+                  ):   const TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                    padding: const EdgeInsets.only(left: 50),
+                    child: Text(
+                      widget.noteData!,
+                      style: widget.checkBox! ?   const TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        decorationColor: Colors.white,
+                        decorationStyle: TextDecorationStyle.solid,
+                        decorationThickness: 2,
+                        decoration: TextDecoration.lineThrough,
+                      ):   const TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
+                    )),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
