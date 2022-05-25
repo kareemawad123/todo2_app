@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:note_project/View/AddNewNote.dart';
 import 'package:note_project/View/EditNote.dart';
 import 'package:provider/provider.dart';
-
 import 'Controller/ProviderController.dart';
 import 'View/NotesPage.dart';
 
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (BuildContext context) => ProviderController(),
       child: MaterialApp(
-        title: 'Flutter',
+        title: 'To Do App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
