@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (BuildContext context) => ProviderController(),
       child: MaterialApp(
-        title: 'To Do App',
+        title: 'To Do Application',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
