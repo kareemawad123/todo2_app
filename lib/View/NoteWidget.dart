@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:note_project/View/EditNote.dart';
-import 'package:provider/provider.dart';
-
+import 'package:note_project/View/NoteView.dart';
 import '../Controller/DatabaseHandler.dart';
-import '../Controller/ProviderController.dart';
 import '../Model/UserModel.dart';
 
+class NoteArgs {
+  UserModel? note;
+
+  NoteArgs(this.note);
+}
+
 class NoteWidget extends StatefulWidget {
-  NoteWidget(
-      {Key? key,
-      required this.noteTitle,
-      required this.noteData,
-      required this.checkBox,
-      required this.id,})
-      : super(key: key);
+  NoteWidget({
+    Key? key,
+    required this.noteTitle,
+    required this.checkBox,
+    required this.id,
+  }) : super(key: key);
   final String? noteTitle;
-  final String? noteData;
   late bool? checkBox;
   final int? id;
 
@@ -29,7 +33,7 @@ class _NoteWidgetState extends State<NoteWidget> {
 
   Future<UserModel> getOneUser() async {
     note = await databaseHandler!.getOneUsers(widget.id!);
-    print('One User Done');
+    print('Get One User Done');
     print('Title: ${note!.noteTitle}');
     return note!;
   }
@@ -38,16 +42,19 @@ class _NoteWidgetState extends State<NoteWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        getOneUser();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => NoteEdit(note: note!)));
+        getOneUser().whenComplete(() => {
+              Get.to(() => NoteView(),
+                  arguments: NoteArgs(note!),
+                  transition: Transition.size,
+                  duration: const Duration(milliseconds: 500))
+            });
       },
       child: Container(
         margin: const EdgeInsets.all(10),
         padding: const EdgeInsets.only(
           bottom: 10,
         ),
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           //color: Color(0xff004D80),
           gradient: LinearGradient(
               colors: [const Color(0xff004D7F), Colors.blue.shade900],
@@ -79,42 +86,41 @@ class _NoteWidgetState extends State<NoteWidget> {
                     },
                   ),
                 ),
-                Container(
+                Expanded(
                   child: Text(
                     widget.noteTitle!,
-                    style: widget.checkBox! ?   const TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    decorationColor: Colors.white,
-                    decorationStyle: TextDecorationStyle.solid,
-                    decorationThickness: 2,
-                    decoration: TextDecoration.lineThrough,
-                  ):   const TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                ),
+                    style: widget.checkBox!
+                        ? const TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'Nunito',
+                            color: Colors.white,
+                            decorationColor: Colors.white,
+                            decorationStyle: TextDecorationStyle.solid,
+                            decorationThickness: 2,
+                            decoration: TextDecoration.lineThrough,
+                          )
+                        : const TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontFamily: 'Nunito',
+                          ),
+                    softWrap: true,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                    padding: const EdgeInsets.only(left: 50),
-                    child: Text(
-                      widget.noteData!,
-                      style: widget.checkBox! ?   const TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                        decorationColor: Colors.white,
-                        decorationStyle: TextDecorationStyle.solid,
-                        decorationThickness: 2,
-                        decoration: TextDecoration.lineThrough,
-                      ):   const TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    )),
+                IconButton(
+                    onPressed: () {
+                      getOneUser().whenComplete(() => {
+                            Get.to(() => NoteEdit(note: note),
+                                transition: Transition.size,
+                                duration: const Duration(milliseconds: 500))
+                          });
+                    },
+                    icon: const Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    ))
               ],
             ),
           ],

@@ -17,7 +17,7 @@ class DatabaseHandler {
   }
 
   Future<Database> _openDB() async {
-    String path = join(await getDatabasesPath(), 'NNotess.db');
+    String path = join(await getDatabasesPath(), 'DatabaseNotes.db');
 
     return openDatabase(path, version: 1, onCreate: _onCreate);
   }
@@ -27,7 +27,6 @@ class DatabaseHandler {
     CREATE TABLE $noteTable (
     $columnId $idType,
     $columnNoteTitle $textType,
-    $columnNoteData $textType,
     $columnDate $textType
     )
     ''');

@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await databaseHandler!.createNote(userModel);
     print('Notes Length: ${list.length}');
   }
+
   Future<void> deleteUser(int id) async {
     await databaseHandler!.deleteNote(id);
     print('Notes Length: ${list.length}');
@@ -87,18 +88,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-
-              /// Submit Button
+              /// Add Button
               Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: ElevatedButton(
                       onPressed: () {
                         addNote(UserModel(
-                            noteTitle: titleController.text,
-                                noteData: dataController.text,
+                          noteTitle: titleController.text,
                           date: DateTime.now(),
-                                ))
-                            .then((value) {
+                        )).then((value) {
                           setState(() {
                             getNotes();
                           });
@@ -111,13 +109,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ))),
+
               /// Delete Button
               Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: ElevatedButton(
                       onPressed: () {
-                        deleteUser(list[0].id!)
-                            .then((value) {
+                        deleteUser(list[0].id!).then((value) {
                           setState(() {
                             getNotes();
                           });
@@ -130,6 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ))),
+
               /// View Users
               FutureBuilder(
                 future: getNotes(),
@@ -143,9 +142,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ? Column(
                                     children: <Widget>[
                                       Text(list[index].noteTitle!),
-                                      Text(list[index].noteData!),
                                       Text(
-                                        DateFormat.yMMMd().format(list[index].date!),),
+                                        DateFormat.yMMMd()
+                                            .format(list[index].date!),
+                                      ),
                                     ],
                                   )
                                 : const Text('Data Empty');

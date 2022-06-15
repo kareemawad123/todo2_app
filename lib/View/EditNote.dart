@@ -14,7 +14,6 @@ class NoteEdit extends StatefulWidget {
 
 class _NoteEditState extends State<NoteEdit> {
   TextEditingController titleController = TextEditingController();
-  TextEditingController dataController = TextEditingController();
   DatabaseHandler? databaseHandler = DatabaseHandler.instance;
 
   Future<void>editUser(UserModel userModel)async{
@@ -29,7 +28,6 @@ class _NoteEditState extends State<NoteEdit> {
   @override
   void dispose() {
     titleController.dispose();
-    dataController.dispose();
     super.dispose();
   }
   @override
@@ -45,25 +43,11 @@ class _NoteEditState extends State<NoteEdit> {
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               child: TextFormField(
                 controller: titleController,
                 decoration: InputDecoration(
                   hintText: widget.note!.noteTitle ?? 'No Title',
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(width: 0),
-                    gapPadding: 10,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: TextFormField(
-                controller: dataController,
-                decoration: InputDecoration(
-                  hintText: widget.note!.noteData ?? 'No Data',
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(width: 0),
                     gapPadding: 10,
@@ -79,7 +63,6 @@ class _NoteEditState extends State<NoteEdit> {
                     onPressed: () {
                       editUser(UserModel(
                         noteTitle: titleController.text,
-                        noteData: dataController.text,
                         id: widget.note!.id
                       ));
                       Navigator.pop(context);
