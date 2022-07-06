@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_project/View/NoteWidget.dart';
 import '../Controller/DatabaseHandler.dart';
 
 import '../Model/UserModel.dart';
@@ -6,8 +7,8 @@ import '../Model/UserModel.dart';
 class NoteEdit extends StatefulWidget {
   static const String routeName = 'NoteEdit';
 
-   NoteEdit({Key? key, required this.note}) : super(key: key);
-  UserModel? note;
+   NoteEdit({Key? key,}) : super(key: key);
+
   @override
   State<NoteEdit> createState() => _NoteEditState();
 }
@@ -32,6 +33,8 @@ class _NoteEditState extends State<NoteEdit> {
   }
   @override
   Widget build(BuildContext context) {
+    NoteArgs args = ModalRoute.of(context)!.settings.arguments as NoteArgs ;
+
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -47,7 +50,7 @@ class _NoteEditState extends State<NoteEdit> {
               child: TextFormField(
                 controller: titleController,
                 decoration: InputDecoration(
-                  hintText: widget.note!.noteTitle ?? 'No Title',
+                  hintText: args.note!.noteTitle ?? 'No Title',
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(width: 0),
                     gapPadding: 10,
@@ -63,7 +66,7 @@ class _NoteEditState extends State<NoteEdit> {
                     onPressed: () {
                       editUser(UserModel(
                         noteTitle: titleController.text,
-                        id: widget.note!.id
+                        id: args.note!.id
                       ));
                       Navigator.pop(context);
                     },

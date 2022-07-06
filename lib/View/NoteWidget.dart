@@ -103,7 +103,7 @@ class _NoteWidgetState extends State<NoteWidget> {
                             fontSize: 20,
                             color: Colors.white,
                             fontFamily: 'Nunito',
-                          ),
+                          ) ,
                     softWrap: true,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -112,10 +112,11 @@ class _NoteWidgetState extends State<NoteWidget> {
                 IconButton(
                     onPressed: () {
                       getOneUser().whenComplete(() => {
-                            Get.to(() => NoteEdit(note: note),
-                                transition: Transition.size,
-                                duration: const Duration(milliseconds: 500))
-                          });
+                        Get.to(() => NoteEdit(),
+                            arguments: NoteArgs(note!),
+                            transition: Transition.size,
+                            duration: const Duration(milliseconds: 500))
+                      });
                     },
                     icon: const Icon(
                       Icons.edit,

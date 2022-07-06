@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         routes: {
-          NoteEdit.routeName: (context) => NoteEdit(note: null),
+          NoteEdit.routeName: (context) => NoteEdit(),
           NoteView.routeName: (context) => NoteView(),
           AddNote.routeName: (context) => const AddNote(),
         },
